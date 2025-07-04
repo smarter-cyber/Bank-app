@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>{{ words['greeting'] }}, {{ username }} 👋</h2>
+
+        <div class="balance-box">
+            <p>{{ words['balance'] }}</p>
+            <h1 id="balance" class="hidden"> {{ currency_symbol}} {{ "{:,.2f}".format(balance) }}</h1>
+            <button onclick="toggleBalance()">{{ words['toggle'] }}</button>
+        </div>
+
+        <div class="dashboard-actions">
+            <a href="/transfer">
+                <button>💸 {{ words['transfer'] }}</button>
+            </a>
+        </div>
+
+        <br>
+        <form method="POST" action="/set_language">
+            <label for="language">🌐 {{ words['select_lang'] }}:</label>
+            <select name="language" onchange="this.form.submit()">
+                <option value="en" {% if language == 'en' %}selected{% endif %}>English</option>
+                <option value="fil" {% if language == 'fil' %}selected{% endif %}>Filipino</option>
+                <option value="fr" {% if language == 'fr' %}selected{% endif %}>French</option>
+            </select>
+        </form>
+
+        <br>
+        <a href="/logout">{{ words['logout'] }}</a>
+    </div>
+
+    <script>
+        function toggleBalance() {
+            const balanceEl = document.getElementById('balance');
+            balanceEl.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>

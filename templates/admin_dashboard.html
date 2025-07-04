@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        body { font-family: Arial; background-color: #f4f4f4; padding: 30px; }
+        h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+        form { margin-bottom: 20px; }
+        input, select { padding: 5px; }
+        button { padding: 6px 12px; background: green; color: white; border: none; border-radius: 4px; }
+        .logout { background: red; float: right; }
+        .section { background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+
+    <div class="section">
+        <h2>👤 User Balances</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Balance ({{ currency_symbol }} {{ currency_name }})</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>
+                    <td>
+                        <form method="POST">
+                            <input type="hidden" name="username" value="{{ user[0] }}">
+                            <input type="number" step="0.01" name="balance" required>
+                            <button name="update_balance" type="submit">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>💱 Change Currency</h2>
+        <form method="POST">
+            <label>Symbol:</label>
+            <input type="text" name="symbol" value="{{ currency_symbol }}" required>
+            <label>Name:</label>
+            <select name="name" required>
+                <option value="PHP" {% if currency_name == "PHP" %}selected{% endif %}>Philippine Peso (PHP)</option>
+                <option value="USD" {% if currency_name == "USD" %}selected{% endif %}>US Dollar (USD)</option>
+                <option value="EUR" {% if currency_name == "EUR" %}selected{% endif %}>Euro (EUR)</option>
+                <option value="TND" {% if currency_name == "TND" %}selected{% endif %}>Tunisian Dinar (TND)</option>
+            </select>
+            <button name="change_currency" type="submit">Update Currency</button>
+        </form>
+    </div>
+
+    <form action="/admin/logout" method="GET">
+        <button class="logout" type="submit">Logout</button>
+    </form>
+</body>
+</html>
