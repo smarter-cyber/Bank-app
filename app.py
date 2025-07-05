@@ -158,16 +158,26 @@ def logout():
     return redirect('/login')
 
 # Admin Routes
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        if username == 'admin' and password == 'secret123':
-            session['admin'] = True
-            return redirect('/admin/dashboard')
-        return render_template('admin_login.html', error="Invalid admin credentials")
-    return render_template('admin_login.html')
+        
+        with open('users.json', 'r') as f:
+            users = json.load(f)
+        
+        for user in users:
+            if user['username'] == username and user['password'] == password:
+                session['user'] = username
+                session['role'] = 'admin' if username == 'admin' else 'user'
+                return redirect('/dashboard')
+        
+        flash('Invalid username or password')
+        return redirect('/login')
+    
+    return render_template('login.html')
+
 
 @app.route('/admin/dashboard', methods=['GET', 'POST'])
 def admin_dashboard():
