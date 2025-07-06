@@ -1,26 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>{{ words['transfer'] }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <title>{{ t.title }}</title>
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <h2>{{ words['transfer'] }}</h2>
+  <div class="container" style="background-color:#e8f0fe; border:1px solid #c6dafc;">
+    <h2>{{ t.title }}</h2>
 
-        <form method="POST">
-            <input type="text" name="account_number" placeholder="{{ words['account_number'] }}" required>
-            <input type="text" name="bank" placeholder="{{ words['bank_name'] }}" required>
-            <input type="number" step="0.01" name="amount" placeholder="{{ words['amount'] }}" required>
-            <button type="submit">✅ {{ words['transfer'] }}</button>
-        </form>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="color:red;">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
 
-        {% if message %}
-            <p class="error">{{ message }}</p>
-        {% endif %}
+    <form method="POST">
+      <input name="account_number" placeholder="{{ t.account_number }}" required><br>
+      <input name="bank" placeholder="{{ t.bank }}" required><br>
+      <input name="amount" type="number" placeholder="{{ t.amount }}" required><br>
+      <button type="submit">{{ t.confirm }}</button>
+    </form>
 
-        <a href="/dashboard">← {{ words['back'] }}</a>
-    </div>
+    <p><a href="/dashboard">{{ t.back }}</a></p>
+  </div>
 </body>
 </html>

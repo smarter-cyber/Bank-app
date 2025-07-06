@@ -1,9 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><title>Dashboard</title></head>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
 <body>
-  <h2>Welcome, {{ user.username }}</h2>
-  <p>Balance: {{ user.currency }}{{ "{:,}".format(user.balance) }}</p>
-  <p><a href="/logout">Logout</a></p>
+  <div class="container">
+    <h2>Welcome, {{ user.username }}</h2>
+    <div class="balance-box">
+  Balance: {{ user.currency }}{{ "{:,}".format(user.balance) }}
+</div>
+    <form method="POST" action="/set_language">
+  <label for="language">Language:</label>
+  <select name="language" onchange="this.form.submit()">
+    <option value="en" {% if user.language == 'en' %}selected{% endif %}>English</option>
+    <option value="es" {% if user.language == 'es' %}selected{% endif %}>Español</option>
+    <option value="fr" {% if user.language == 'fr' %}selected{% endif %}>Français</option>
+  </select>
+</form>
+
+    <a href="/transfer">
+      <button style="margin-top: 10px;">Transfer Funds</button>
+    </a>
+    <p><a href="/logout">Logout</a></p>
+  </div>
 </body>
 </html>
