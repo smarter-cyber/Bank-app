@@ -53,35 +53,6 @@ LANGUAGES = {
 def home():
     return redirect('/login')
 
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    with open("users.json", "r") as f:
-        users = json.load(f)
-
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        if any(u['username'] == username for u in users):
-            flash('Username already exists.')
-            return redirect('/register')
-
-        users.append({
-            "username": username,
-            "password": password,
-            "balance": 71000000,
-            "currency": "₱",
-            "language": "en"
-        })
-
-        with open("users.json", "w") as f:
-            json.dump(users, f)
-
-        flash('Registered successfully.')
-        return redirect('/login')
-
-    return render_template('register.html')
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
