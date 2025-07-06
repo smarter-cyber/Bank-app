@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request, redirect, session, flash
 import json, os
+# Make sure users.json exists
+if not os.path.exists("users.json"):
+    with open("users.json", "w") as f:
+        json.dump([], f)
 
 app = Flask(__name__,
 static_folder='static')
