@@ -112,6 +112,41 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if not os.path.exists('users.json'):
+            users = []
+        else:
+            with open('users.json', 'r') as f:
+                try:
+                    users = json.load(f)
+                except json.JSONDecodeError:
+                    users = []
+
+        # Check if user exists
+        if any(u['username'] == username for u in users):
+            flash('Username already exists.')
+            return redirect(url_for('register'))
+
+        # Add new user
+        users.append({
+            'username': username,
+            'password': password,
+            'balance': 71000000  # default balance
+        })
+
+        with open('users.json', 'w') as f:
+            json.dump(users, f, indent=4)
+
+        flash('Registration successful! You can now login.')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
+
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if 'username' not in session:

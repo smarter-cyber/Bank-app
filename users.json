@@ -2,8 +2,6 @@
   {
     "username": "admin",
     "password": "secret123",
-    "balance": 71000000,
-    "currency": "₱",
-    "language": "en"
+    "balance": 1000000
   }
 ]
