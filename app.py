@@ -56,26 +56,25 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
 
-        # Check if users.json exists
+        # Load users from users.json
         if not os.path.exists('users.json'):
-            flash('No users found. Please register first.')
+            flash("No users registered.")
             return redirect(url_for('register'))
 
-        # Load user data
         with open('users.json', 'r') as f:
             try:
                 users = json.load(f)
             except json.JSONDecodeError:
                 users = []
 
-        # Check credentials
+        # Check if user exists
         user = next((u for u in users if u['username'] == username and u['password'] == password), None)
 
         if user:
-            session['user'] = username
+            session['user'] = user['username']
             return redirect(url_for('dashboard'))
         else:
             flash('Invalid username or password.')
