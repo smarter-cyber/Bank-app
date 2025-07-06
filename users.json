@@ -2,14 +2,7 @@
   {
     "username": "admin",
     "password": "secret123",
-    "balance": 100000000,
-    "currency": "₱",
-    "language": "en"
-  },
-  {
-    "username": "samuel",
-    "password": "sam123",
-    "balance": 500000,
+    "balance": 71000000,
     "currency": "₱",
     "language": "en"
   }
