@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Transfer Funds</title>
+    <title>Transfer</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="transfer-container">
-        <h2>Transfer Funds</h2>
+        <h2>{{ t("Transfer Funds", lang) }}</h2>
         <form method="POST">
-            <input type="text" name="account_number" placeholder="Account Number" required><br>
-            <input type="text" name="bank" placeholder="Bank Name" required><br>
-            <input type="number" name="amount" placeholder="Amount" required><br>
-            <button type="submit">Transfer</button>
+            <input type="text" name="account_number" placeholder="{{ t('Account Number', lang) }}" required><br>
+            <input type="text" name="bank" placeholder="{{ t('Bank Name', lang) }}" required><br>
+            <input type="number" name="amount" placeholder="{{ t('Amount', lang) }}" required><br>
+            <button type="submit">{{ t('Transfer', lang) }}</button>
         </form>
 
         {% if message %}

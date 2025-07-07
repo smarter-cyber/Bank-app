@@ -1,0 +1,51 @@
+{
+  "Your Balance": {
+    "en": "Your Balance",
+    "es": "Tu saldo",
+    "fr": "Votre solde",
+    "fil": "Iyong Balanse",
+    "ar": "رصيدك"
+  },
+  "Transfer Funds": {
+    "en": "Transfer Funds",
+    "es": "Transferir fondos",
+    "fr": "Transférer des fonds",
+    "fil": "Maglipat ng Pondo",
+    "ar": "تحويل الأموال"
+  },
+  "Account Number": {
+    "en": "Account Number",
+    "es": "Número de cuenta",
+    "fr": "Numéro de compte",
+    "fil": "Numero ng Account",
+    "ar": "رقم الحساب"
+  },
+  "Bank Name": {
+    "en": "Bank Name",
+    "es": "Nombre del banco",
+    "fr": "Nom de la banque",
+    "fil": "Pangalan ng Bangko",
+    "ar": "اسم البنك"
+  },
+  "Amount": {
+    "en": "Amount",
+    "es": "Cantidad",
+    "fr": "Montant",
+    "fil": "Halaga",
+    "ar": "المبلغ"
+  },
+  "Transfer": {
+    "en": "Transfer",
+    "es": "Transferir",
+    "fr": "Transférer",
+    "fil": "Maglipat",
+    "ar": "تحويل"
+  },
+  "You need to upgrade your account first.": {
+    "en": "You need to upgrade your account first.",
+    "es": "Necesitas actualizar tu cuenta primero.",
+    "fr": "Vous devez d'abord mettre à niveau votre compte.",
+    "fil": "Kailangan mong i-upgrade muna ang iyong account.",
+    "ar": "تحتاج إلى ترقية حسابك أولاً."
+  }
+}

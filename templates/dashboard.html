@@ -6,13 +6,22 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <h2>Hello, {{ username }}!</h2>
+        <form method="POST" action="/set_language">
+            <select name="language" onchange="this.form.submit()">
+                <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
+                <option value="es" {% if lang == 'es' %}selected{% endif %}>Español</option>
+                <option value="fr" {% if lang == 'fr' %}selected{% endif %}>Français</option>
+                <option value="fil" {% if lang == 'fil' %}selected{% endif %}>Filipino</option>
+                <option value="ar" {% if lang == 'ar' %}selected{% endif %}>العربية</option>
+            </select>
+        </form>
+
+        <h2>{{ t("Your Balance", lang) }}</h2>
         <div class="balance-box">
-            <p class="label">Your Balance</p>
             <p class="amount">{{ currency_symbol }}{{ "{:,.0f}".format(balance) }}</p>
         </div>
 
-        <a href="/transfer" class="btn">Transfer Funds</a>
+        <a href="/transfer" class="btn">{{ t("Transfer Funds", lang) }}</a>
     </div>
 </body>
 </html>

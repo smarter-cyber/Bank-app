@@ -1,6 +1,14 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import json, os
 
+def load_translations():
+    with open("translations.json", "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def translate(text, lang="en"):
+    translations = load_translations()
+    return translations.get(text, {}).get(lang, text)
+
 app = Flask(__name__, static_folder='static')
 app.secret_key = 'supersecretkey'  # Required for session handling
 
@@ -70,6 +78,7 @@ def dashboard():
         return redirect(url_for('login'))
 
     username = session['user']
+    lang = session.get('lang', 'en')
 
     with open('users.json', 'r') as f:
         users = json.load(f)
@@ -79,25 +88,33 @@ def dashboard():
         flash("User not found.")
         return redirect(url_for('login'))
 
-    currency_symbol = user.get('currency', '₱')  # default ₱
+    currency_symbol = user.get('currency', '₱')
 
     return render_template('dashboard.html',
                            username=username,
                            balance=user['balance'],
-                           currency_symbol=currency_symbol)
+                           currency_symbol=currency_symbol,
+                           lang=lang,
+                           t=translate)
 
 @app.route('/transfer', methods=['GET', 'POST'])
 def transfer():
     if 'user' not in session:
         return redirect(url_for('login'))
 
+    lang = session.get('lang', 'en')
     message = None
 
     if request.method == 'POST':
-        # Process inputs (but block transfer)
-        message = "You need to upgrade your account first."
+        message = translate("You need to upgrade your account first.", lang)
 
-    return render_template('transfer.html', message=message)
+    return render_template('transfer.html', message=message, lang=lang, t=translate)
+
+@app.route('/set_language', methods=['POST'])
+def set_language():
+    selected_lang = request.form.get("language", "en")
+    session['lang'] = selected_lang
+    return redirect(url_for('dashboard'))
 
 @app.route('/logout')
 def logout():
