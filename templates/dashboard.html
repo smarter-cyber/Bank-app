@@ -5,17 +5,14 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Welcome, {{ username }}!</h2>
-        <p>Your Balance: <strong>{{ balance }}</strong></p>
+    <div class="dashboard-container">
+        <h2>Hello, {{ username }}!</h2>
+        <div class="balance-box">
+            <p class="label">Your Balance</p>
+            <p class="amount">{{ currency_symbol }}{{ "{:,.0f}".format(balance) }}</p>
+        </div>
 
-        <form action="{{ url_for('transfer') }}">
-            <button type="submit">Transfer Funds</button>
-        </form>
-
-        <form action="{{ url_for('logout') }}">
-            <button type="submit" style="background-color: red;">Logout</button>
-        </form>
+        <a href="/transfer" class="btn">Transfer Funds</a>
     </div>
 </body>
 </html>

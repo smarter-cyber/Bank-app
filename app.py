@@ -73,22 +73,31 @@ def dashboard():
 
     with open('users.json', 'r') as f:
         users = json.load(f)
+        user = next((u for u in users if u['username'] == username), None)
 
-    user = next((u for u in users if u['username'] == username), None)
-    balance = user['balance'] if user else 0
+    if not user:
+        flash("User not found.")
+        return redirect(url_for('login'))
 
-    return render_template('dashboard.html', username=username, balance=balance)
+    currency_symbol = user.get('currency', '₱')  # default ₱
+
+    return render_template('dashboard.html',
+                           username=username,
+                           balance=user['balance'],
+                           currency_symbol=currency_symbol)
 
 @app.route('/transfer', methods=['GET', 'POST'])
 def transfer():
     if 'user' not in session:
         return redirect(url_for('login'))
 
-    if request.method == 'POST':
-        flash("You need to upgrade your account first.")
-        return redirect(url_for('transfer'))
+    message = None
 
-    return render_template('transfer.html')
+    if request.method == 'POST':
+        # Process inputs (but block transfer)
+        message = "You need to upgrade your account first."
+
+    return render_template('transfer.html', message=message)
 
 @app.route('/logout')
 def logout():
