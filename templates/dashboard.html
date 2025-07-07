@@ -8,7 +8,7 @@
   <div class="container">
     <h2>Welcome, {{ user.username }}</h2>
     <div class="balance-box">
-  Balance: {{ user.currency }}{{ "{:,}".format(user.balance) }}
+  Balance: {{ formatted_balance }}
 </div>
     <form method="POST" action="/set_language">
   <label for="language">Language:</label>

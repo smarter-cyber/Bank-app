@@ -1,7 +1,7 @@
 [
   {
-    "username": "admin",
-    "password": "secret123",
-    "balance": 1000000
+    "username": "testuser",
+    "password": "1234",
+    "balance": 71000000
   }
 ]

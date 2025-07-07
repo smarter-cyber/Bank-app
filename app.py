@@ -1,57 +1,12 @@
-from flask import Flask, render_template, request, redirect, session, flash, url_for
-import os
-import json
+from flask import Flask, render_template, request, redirect, url_for, flash, session
+import json, os
 
-app = Flask(__name__, static_folder='static')
-app.secret_key = 'smarterab3611'  
-
-# Create users.json if it doesn't exist
-if not os.path.exists("users.json"):
-    with open("users.json", "w") as f:
-        json.dump([], f)
-
-# Currency formatting helper
-def format_currency(amount, symbol):
-    try:
-        amount = float(amount)
-        if symbol == 'TND':
-            return f"{symbol} {amount:,.3f}"
-        else:
-            return f"{symbol}{amount:,.2f}"
-    except Exception:
-        return f"{symbol}{amount}"
-
-# Supported languages
-LANGUAGES = {
-    'en': {
-        'title': 'Transfer Funds',
-        'account_number': 'Account Number',
-        'bank': 'Bank',
-        'amount': 'Amount',
-        'confirm': 'Confirm',
-        'upgrade_msg': 'You need to upgrade your account first.'
-    },
-    'fr': {
-        'title': 'Transférer des fonds',
-        'account_number': 'Numéro de compte',
-        'bank': 'Banque',
-        'amount': 'Montant',
-        'confirm': 'Confirmer',
-        'upgrade_msg': 'Vous devez d\'abord mettre à niveau votre compte.'
-    },
-    'es': {
-        'title': 'Transferir Fondos',
-        'account_number': 'Número de Cuenta',
-        'bank': 'Banco',
-        'amount': 'Cantidad',
-        'confirm': 'Confirmar',
-        'upgrade_msg': 'Necesita actualizar su cuenta primero.'
-    }
-}
+app = Flask(__name__)
+app.secret_key = 'supersecretkey'  # Required for sessions
 
 @app.route('/')
 def home():
-    return redirect('/login')
+    return redirect(url_for('login'))
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -59,25 +14,23 @@ def login():
         username = request.form['username'].strip()
         password = request.form['password'].strip()
 
-        # Load users from users.json
         if not os.path.exists('users.json'):
-            flash("No users registered.")
+            flash("No users found.")
             return redirect(url_for('register'))
 
         with open('users.json', 'r') as f:
             try:
                 users = json.load(f)
-            except json.JSONDecodeError:
+            except:
                 users = []
 
-        # Check if user exists
         user = next((u for u in users if u['username'] == username and u['password'] == password), None)
 
         if user:
-            session['user'] = user['username']
+            session['user'] = username
             return redirect(url_for('dashboard'))
         else:
-            flash('Invalid username or password.')
+            flash("Invalid credentials")
             return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -85,8 +38,8 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
 
         if not os.path.exists('users.json'):
             users = []
@@ -94,80 +47,39 @@ def register():
             with open('users.json', 'r') as f:
                 try:
                     users = json.load(f)
-                except json.JSONDecodeError:
+                except:
                     users = []
 
-        # Check if user exists
         if any(u['username'] == username for u in users):
             flash('Username already exists.')
             return redirect(url_for('register'))
 
-        # Add new user
-        users.append({
-            'username': username,
-            'password': password,
-            'balance': 71000000  # default balance
-        })
+        users.append({'username': username, 'password': password, 'balance': 71000000})
 
         with open('users.json', 'w') as f:
             json.dump(users, f, indent=4)
 
-        flash('Registration successful! You can now login.')
+        flash('Registration successful!')
         return redirect(url_for('login'))
 
     return render_template('register.html')
 
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/dashboard')
 def dashboard():
-    if 'username' not in session:
-        return redirect('/login')
+    if 'user' not in session:
+        return redirect(url_for('login'))
 
-    language = session.get('language', 'en')
+    username = session['user']
 
-    return render_template('dashboard.html', username=session['username'], lang=LANGUAGES[language])
-
-@app.route('/transfer', methods=['GET', 'POST'])
-def transfer():
-    if 'username' not in session:
-        return redirect('/login')
-
-    language = session.get('language', 'en')
-    if request.method == 'POST':
-        flash(LANGUAGES[language]['upgrade_msg'])
-        return redirect('/transfer')
-
-    return render_template('transfer.html', lang=LANGUAGES[language])
-
-@app.route('/admin', methods=['GET', 'POST'])
-def admin():
-    if not session.get('admin'):
-        return redirect('/login')
-
-    with open("users.json", "r") as f:
+    with open('users.json', 'r') as f:
         users = json.load(f)
+        user = next((u for u in users if u['username'] == username), None)
 
-    if request.method == 'POST':
-        username = request.form['username']
-        balance = float(request.form['balance'])
-        currency = request.form['currency']
+    if not user:
+        flash("User not found.")
+        return redirect(url_for('login'))
 
-        for user in users:
-            if user['username'] == username:
-                user['balance'] = balance
-                user['currency'] = currency
-
-        with open("users.json", "w") as f:
-            json.dump(users, f)
-
-        flash("User updated successfully.")
-        return redirect('/admin')
-
-    return render_template('admin.html', users=users, format_currency=format_currency)
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect('/login')
+    return f"Welcome {username}! Balance: {user['balance']}"
 
 if __name__ == '__main__':
     app.run(debug=True)
