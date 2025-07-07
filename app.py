@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import json, os
 
-app = Flask(__name__)
-app.secret_key = 'supersecretkey'  # Required for sessions
+app = Flask(__name__, static_folder='static')
+app.secret_key = 'supersecretkey'  # Required for session handling
 
 @app.route('/')
 def home():
@@ -15,7 +15,7 @@ def login():
         password = request.form['password'].strip()
 
         if not os.path.exists('users.json'):
-            flash("No users found.")
+            flash("No users registered yet.")
             return redirect(url_for('register'))
 
         with open('users.json', 'r') as f:
@@ -30,7 +30,7 @@ def login():
             session['user'] = username
             return redirect(url_for('dashboard'))
         else:
-            flash("Invalid credentials")
+            flash("Invalid username or password.")
             return redirect(url_for('login'))
 
     return render_template('login.html')
@@ -59,7 +59,7 @@ def register():
         with open('users.json', 'w') as f:
             json.dump(users, f, indent=4)
 
-        flash('Registration successful!')
+        flash('Registration successful! Please log in.')
         return redirect(url_for('login'))
 
     return render_template('register.html')
@@ -73,13 +73,27 @@ def dashboard():
 
     with open('users.json', 'r') as f:
         users = json.load(f)
-        user = next((u for u in users if u['username'] == username), None)
 
-    if not user:
-        flash("User not found.")
+    user = next((u for u in users if u['username'] == username), None)
+    balance = user['balance'] if user else 0
+
+    return render_template('dashboard.html', username=username, balance=balance)
+
+@app.route('/transfer', methods=['GET', 'POST'])
+def transfer():
+    if 'user' not in session:
         return redirect(url_for('login'))
 
-    return f"Welcome {username}! Balance: {user['balance']}"
+    if request.method == 'POST':
+        flash("You need to upgrade your account first.")
+        return redirect(url_for('transfer'))
+
+    return render_template('transfer.html')
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(debug=True)
