@@ -10,7 +10,7 @@ def translate(text, lang="en"):
     return translations.get(text, {}).get(lang, text)
 
 app = Flask(__name__, static_folder='static')
-app.secret_key = 'supersecretkey'  # Required for session handling
+app.secret_key = 'supersecretkey'
 
 @app.route('/')
 def home():
@@ -21,6 +21,11 @@ def login():
     if request.method == 'POST':
         username = request.form['username'].strip()
         password = request.form['password'].strip()
+
+        # Admin login check
+        if username == 'admin' and password == 'secret123':
+            session['admin'] = True
+            return redirect(url_for('admin_dashboard'))
 
         if not os.path.exists('users.json'):
             flash("No users registered yet.")
@@ -62,7 +67,7 @@ def register():
             flash('Username already exists.')
             return redirect(url_for('register'))
 
-        users.append({'username': username, 'password': password, 'balance': 71000000})
+        users.append({'username': username, 'password': password, 'balance': 71000000, 'currency': '₱'})
 
         with open('users.json', 'w') as f:
             json.dump(users, f, indent=4)
@@ -116,9 +121,36 @@ def set_language():
     session['lang'] = selected_lang
     return redirect(url_for('dashboard'))
 
+@app.route('/admin_dashboard', methods=['GET', 'POST'])
+def admin_dashboard():
+    if not session.get('admin'):
+        flash("Unauthorized access.")
+        return redirect(url_for('login'))
+
+    with open('users.json', 'r') as f:
+        users = json.load(f)
+
+    if request.method == 'POST':
+        username = request.form['username']
+        new_balance = request.form['balance']
+        new_currency = request.form['currency']
+
+        for user in users:
+            if user['username'] == username:
+                user['balance'] = int(new_balance)
+                user['currency'] = new_currency
+
+        with open('users.json', 'w') as f:
+            json.dump(users, f, indent=4)
+
+        flash("User updated successfully.")
+        return redirect(url_for('admin_dashboard'))
+
+    return render_template('admin_dashboard.html', users=users)
+
 @app.route('/logout')
 def logout():
-    session.pop('user', None)
+    session.clear()
     return redirect(url_for('login'))
 
 if __name__ == '__main__':

@@ -11,5 +11,17 @@
         "balance": 71000000,
         "currency": "\u20b1",
         "is_verified": false
+    },
+    {
+        "username": "admin",
+        "password": "secret123",
+        "balance": 71000000,
+        "currency": "\u20b1"
+    },
+    {
+        "username": "smarter",
+        "password": "201020",
+        "balance": 20000000,
+        "currency": "\u20b1"
     }
 ]

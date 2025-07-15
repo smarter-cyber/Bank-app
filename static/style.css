@@ -59,3 +59,36 @@ button:hover {
     font-weight: bold;
     margin-top: 15px;
 }
+
+@media screen and (max-width: 600px) {
+    body {
+        padding: 20px;
+    }
+
+    .dashboard-container,
+    .transfer-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .balance-box .amount {
+        font-size: 22px;
+    }
+
+    .balance-box .label {
+        font-size: 14px;
+    }
+
+    input, button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    h2, h3 {
+        font-size: 18px;
+    }
+
+    .btn {
+        font-size: 15px;
+    }
+}
