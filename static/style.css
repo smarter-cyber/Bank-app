@@ -63,12 +63,24 @@ button:hover {
 @media screen and (max-width: 600px) {
     body {
         padding: 20px;
+        text-align: center;
     }
 
     .dashboard-container,
-    .transfer-container {
-        width: 100%;
+    .transfer-container,
+    .form-container,
+    .login-box,
+    .user-card,
+    .admin-container {
+        width: 100% !important;
+        max-width: 100%;
         padding: 20px;
+        margin: 20px auto;
+        box-sizing: border-box;
+    }
+
+    .balance-box {
+        padding: 15px;
     }
 
     .balance-box .amount {
@@ -79,9 +91,11 @@ button:hover {
         font-size: 14px;
     }
 
-    input, button {
+    input, button, select {
         font-size: 14px;
         padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     h2, h3 {
@@ -90,5 +104,10 @@ button:hover {
 
     .btn {
         font-size: 15px;
+        width: 100%;
+    }
+
+    .logout-link {
+        text-align: center;
     }
 }
