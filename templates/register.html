@@ -3,11 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .flash-messages {
+            list-style-type: none;
+            padding: 0;
+            color: red;
+            margin-top: 10px;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 60px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            color: #004080;
+        }
+
+        .form-container p {
+            margin-top: 20px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .form-container {
+                width: 100%;
+                padding: 20px;
+            }
+
+            input, button, select {
+                width: 100%;
+                font-size: 14px;
+                padding: 10px;
+                box-sizing: border-box;
+            }
+
+            .form-container h2 {
+                font-size: 20px;
+            }
+
+            .form-container p,
+            .form-container label {
+                font-size: 14px;
+            }
+
+            .flash-messages {
+                font-size: 14px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="form-container">
         <h2>Register</h2>
+
         {% with messages = get_flashed_messages() %}
           {% if messages %}
             <ul class="flash-messages">
@@ -17,11 +72,13 @@
             </ul>
           {% endif %}
         {% endwith %}
+
         <form method="POST" action="/register">
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Register</button>
         </form>
+
         <p>Already have an account? <a href="/login">Login</a></p>
 
         <form method="POST" action="/translate">

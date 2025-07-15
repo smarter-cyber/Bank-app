@@ -1,14 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        @media screen and (max-width: 600px) {
+            #welcomeMsg {
+                font-size: 16px;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .dashboard-container {
+                width: 100%;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            .balance-box .amount {
+                font-size: 22px;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 16px;
+            }
+
+            select {
+                width: 90%;
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- ✅ Welcome Message -->
     <div style="padding: 20px; font-size: 20px; font-weight: bold; color: #004080;" id="welcomeMsg">
         <h2>Welcome {{ username }}</h2>
-
     </div>
 
     <div class="dashboard-container">
@@ -20,7 +55,7 @@
         <a href="/transfer" class="btn">{{ t("Transfer Funds", lang) }}</a>
     </div>
 
-    <!-- ✅ Moved Language Selector to Bottom -->
+    <!-- ✅ Language Selector -->
     <form method="POST" action="/set_language" style="text-align:center; margin-top: 30px;">
         <select name="language" onchange="this.form.submit()">
             <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
