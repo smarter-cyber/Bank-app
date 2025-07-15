@@ -5,17 +5,12 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="dashboard-container">
-        <form method="POST" action="/set_language">
-            <select name="language" onchange="this.form.submit()">
-                <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
-                <option value="es" {% if lang == 'es' %}selected{% endif %}>Español</option>
-                <option value="fr" {% if lang == 'fr' %}selected{% endif %}>Français</option>
-                <option value="fil" {% if lang == 'fil' %}selected{% endif %}>Filipino</option>
-                <option value="ar" {% if lang == 'ar' %}selected{% endif %}>العربية</option>
-            </select>
-        </form>
+    <!-- ✅ Welcome Message -->
+    <div style="padding: 20px; font-size: 20px; font-weight: bold; color: #004080;" id="welcomeMsg">
+        Welcome, User
+    </div>
 
+    <div class="dashboard-container">
         <h2>{{ t("Your Balance", lang) }}</h2>
         <div class="balance-box">
             <p class="amount">{{ currency_symbol }}{{ "{:,.0f}".format(balance) }}</p>
@@ -23,5 +18,24 @@
 
         <a href="/transfer" class="btn">{{ t("Transfer Funds", lang) }}</a>
     </div>
+
+    <!-- ✅ Moved Language Selector to Bottom -->
+    <form method="POST" action="/set_language" style="text-align:center; margin-top: 30px;">
+        <select name="language" onchange="this.form.submit()">
+            <option value="en" {% if lang == 'en' %}selected{% endif %}>English</option>
+            <option value="es" {% if lang == 'es' %}selected{% endif %}>Español</option>
+            <option value="fr" {% if lang == 'fr' %}selected{% endif %}>Français</option>
+            <option value="fil" {% if lang == 'fil' %}selected{% endif %}>Filipino</option>
+            <option value="ar" {% if lang == 'ar' %}selected{% endif %}>العربية</option>
+        </select>
+    </form>
+
+    <!-- ✅ Script to update welcome message -->
+    <script>
+      const username = localStorage.getItem("currentUser");
+      if (username) {
+        document.getElementById("welcomeMsg").textContent = "Welcome, " + username;
+      }
+    </script>
 </body>
 </html>

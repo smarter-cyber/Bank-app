@@ -1,28 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="form-container">
         <h2>Register</h2>
-        <form method="POST">
-            <input type="text" name="username" placeholder="Choose a username" required><br>
-            <input type="password" name="password" placeholder="Choose a password" required><br>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        <form method="POST" action="/register">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Register</button>
         </form>
         <p>Already have an account? <a href="/login">Login</a></p>
 
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class="flash">
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+        <form method="POST" action="/translate">
+            <label for="language">🌐 Language:</label>
+            <select name="language" onchange="this.form.submit()">
+                <option value="en" {% if session.get('lang') == 'en' %}selected{% endif %}>English</option>
+                <option value="es" {% if session.get('lang') == 'es' %}selected{% endif %}>Español</option>
+                <option value="fr" {% if session.get('lang') == 'fr' %}selected{% endif %}>Français</option>
+                <option value="ar" {% if session.get('lang') == 'ar' %}selected{% endif %}>العربية</option>
+                <option value="fil" {% if session.get('lang') == 'fil' %}selected{% endif %}>Filipino</option>
+            </select>
+        </form>
     </div>
 </body>
 </html>

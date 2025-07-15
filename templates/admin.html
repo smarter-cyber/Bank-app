@@ -1,40 +1,95 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Panel</title>
-  <link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - MBC DREAM</title>
+  <link rel="stylesheet" href="static/style.css" />
+  <style>
+    .admin-container {
+      padding: 20px;
+    }
+
+    .admin-header {
+      background-color: #004080;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .currency-box {
+      margin: 20px 0;
+      background: #e0efff;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .currency-box input {
+      padding: 10px;
+      width: 60px;
+      margin-right: 10px;
+    }
+
+    .user-list {
+      margin-top: 30px;
+    }
+
+    .user-card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+
+    .user-card input {
+      padding: 8px;
+      width: 120px;
+      margin-left: 10px;
+    }
+
+    .save-btn {
+      padding: 6px 12px;
+      background: #004080;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .logout-btn {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .logout-btn button {
+      padding: 10px 20px;
+      background: crimson;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
-<body>
-  <div class="container">
-    <h2>Admin Panel</h2>
+<body onload="loadAdminPanel()">
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div style="color: green;">{{ messages[0] }}</div>
-      {% endif %}
-    {% endwith %}
+  <div class="admin-header">Admin Panel - MBC DREAM</div>
 
-    {% for u in users %}
-      <form method="POST">
-        <h3>{{ u.username }}</h3>
-        <input type="hidden" name="username" value="{{ u.username }}">
-        
-        <input type="number" name="balance" value="{{ u.balance }}" required>
-        <small>Current: <strong>{{ format_currency(u.balance, u.currency) }}</strong></small><br>
+  <div class="admin-container">
+    <!-- Currency Settings -->
+    <div class="currency-box">
+      <strong>Currency Symbol:</strong>
+      <input type="text" id="currencySymbol" maxlength="2" />
+      <button class="save-btn" onclick="saveCurrency()">Save</button>
+    </div>
 
-        <select name="currency">
-          <option value="₱" {% if u.currency == '₱' %}selected{% endif %}>₱ Peso</option>
-          <option value="TND" {% if u.currency == 'TND' %}selected{% endif %}>TND Dinar</option>
-          <option value="$" {% if u.currency == '$' %}selected{% endif %}>$ Dollar</option>
-          <option value="€" {% if u.currency == '€' %}selected{% endif %}>€ Euro</option>
-        </select><br>
+    <!-- User List -->
+    <div class="user-list" id="userList">
+      <!-- User cards will be inserted here -->
+    </div>
 
-        <button type="submit">Update</button>
-        <hr>
-      </form>
-    {% endfor %}
-
-    <p><a href="/dashboard">Back to Dashboard</a></p>
-  </div>
-</body>
-</html>
+    <

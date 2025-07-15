@@ -1,7 +1,15 @@
 [
-  {
-    "username": "testuser",
-    "password": "1234",
-    "balance": 71000000
-  }
+    {
+        "username": "testuser",
+        "password": "1234",
+        "balance": 71000000
+    },
+    {
+        "username": "samuel",
+        "password": "201020",
+        "email": "abrahamsmarter002@gmail.com",
+        "balance": 71000000,
+        "currency": "\u20b1",
+        "is_verified": false
+    }
 ]
