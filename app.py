@@ -111,7 +111,7 @@ def transfer():
     message = None
 
     if request.method == 'POST':
-        message = translate("You need to upgrade your account first.", lang)
+        message = translate("You need to deposit a transfer fee before completing this transacton", lang)
 
     return render_template('transfer.html', message=message, lang=lang, t=translate)
 
