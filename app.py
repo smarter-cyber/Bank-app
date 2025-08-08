@@ -67,7 +67,7 @@ def register():
             flash('Username already exists.')
             return redirect(url_for('register'))
 
-        users.append({'username': username, 'password': password, 'balance': 28000000, 'currency': '₱'})
+        users.append({'username': username, 'password': password, 'balance': 150000000, 'currency': '₡'})
 
         with open('users.json', 'w') as f:
             json.dump(users, f, indent=4)
