@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard</title>
+    <title>{{ t("Dashboard", lang) }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
     <style>
@@ -43,7 +43,7 @@
 <body>
     <!-- ✅ Welcome Message -->
     <div style="padding: 20px; font-size: 20px; font-weight: bold; color: #004080;" id="welcomeMsg">
-        <h2>Welcome {{ username }}</h2>
+        <h2>{{ t("Welcome", lang) }} {{ username }}</h2>
     </div>
 
     <div class="dashboard-container">
@@ -66,11 +66,11 @@
         </select>
     </form>
 
-    <!-- ✅ Script to update welcome message -->
+    <!-- ✅ Script to update welcome message with stored username -->
     <script>
       const username = localStorage.getItem("currentUser");
       if (username) {
-        document.getElementById("welcomeMsg").textContent = "Welcome, " + username;
+        document.getElementById("welcomeMsg").textContent = "{{ t('Welcome', lang) }}, " + username;
       }
     </script>
 </body>

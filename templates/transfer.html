@@ -43,9 +43,10 @@
             <button type="submit">{{ t('Transfer', lang) }}</button>
         </form>
 
-        {% if message %}
-            <p class="upgrade-message">{{ message }}</p>
-        {% endif %}
+       {% if message %}
+    <p class="upgrade-message">{{ t(message, lang) }}</p>
+{% endif %}
+
     </div>
 </body>
 </html>
